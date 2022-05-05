@@ -4,6 +4,7 @@ import (
 	"WCPool/models"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -27,6 +28,7 @@ func (sc *SecurityController) VerifyUser(db *sql.DB) http.HandlerFunc {
 		err := json.NewDecoder(r.Body).Decode(&user)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
+			fmt.Println("users cred")
 			return
 		}
 
@@ -35,6 +37,7 @@ func (sc *SecurityController) VerifyUser(db *sql.DB) http.HandlerFunc {
 		err = authUserService.VerifyUser(db, user)
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
+			fmt.Println("verify")
 			return
 		}
 
@@ -42,6 +45,7 @@ func (sc *SecurityController) VerifyUser(db *sql.DB) http.HandlerFunc {
 		token, err := authUserService.GenerateToken(user)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Println("jwt")
 			return
 		}
 

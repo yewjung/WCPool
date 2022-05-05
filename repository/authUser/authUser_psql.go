@@ -32,4 +32,15 @@ func (authRepo *AuthUserRepo) UpdateUser(db *sql.DB, user *models.AuthUser) erro
 		return err
 	}
 	return nil
+
+}
+
+// get user by email
+func (authRepo *AuthUserRepo) GetUserByEmail(db *sql.DB, email string) (*models.AuthUser, error) {
+	var user models.AuthUser
+	err := db.QueryRow("SELECT * FROM authuser WHERE email=$1", email).Scan(&user.Email, &user.PasswordHash, &user.UserId)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }

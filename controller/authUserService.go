@@ -51,14 +51,14 @@ func (authUserService *AuthUserService) GenerateToken(user models.SecUser) (stri
 
 // verify user
 func (authUserService *AuthUserService) VerifyUser(db *sql.DB, user models.SecUser) error {
-	var authUser models.AuthUser
 
 	authRepo := authUserRepo.AuthUserRepo{}
-	if !authRepo.UserExist(db, user.Email) {
+	authUser, err := authRepo.GetUserByEmail(db, user.Email)
+	if authUser == nil || err != nil {
 		// server error
 		return errors.New("server error")
 	}
-	err := bcrypt.CompareHashAndPassword(
+	err = bcrypt.CompareHashAndPassword(
 		[]byte(authUser.PasswordHash),
 		[]byte(user.Password))
 

@@ -70,6 +70,7 @@ func runServer(router *mux.Router, wg *sync.WaitGroup) {
 	)
 	if err != nil {
 		fmt.Println(err)
+		fmt.Println("Server 8080 is down")
 	}
 	wg.Done()
 }
