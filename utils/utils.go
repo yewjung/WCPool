@@ -3,6 +3,7 @@ package utils
 import (
 	"WCPool/models"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -29,6 +30,7 @@ func SendServerErrorIfErr(w http.ResponseWriter, r *http.Request, err error) boo
 
 func HandleResponse(w http.ResponseWriter, r *http.Request, err error, data interface{}) {
 	if err != nil {
+		fmt.Println(err)
 		errorMessage := models.Error{Message: "Server Error"}
 		SendError(w, http.StatusInternalServerError, errorMessage)
 		return
